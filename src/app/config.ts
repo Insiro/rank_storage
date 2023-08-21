@@ -3,12 +3,11 @@ import { resolve } from 'path';
 import dotenv,{ parse }  from 'dotenv';
 import { DataSourceOptions } from 'typeorm';
 import { User } from '../entities/user.entity';
-
+import { Record } from 'src/entities/record.entity';
 const fileName = 'src/bot.env'
 if (existsSync(fileName))
     dotenv.config({path:fileName});
-else
-    dotenv.config();
+
   
 
 
@@ -21,7 +20,7 @@ export const dataSourceOption: DataSourceOptions = {
       password: process.env.dbPWD ||'test1234',
       synchronize: false,
       logging: false,
-      entities: [User],
+      entities: [User, Record],
       migrations: ['./migration/*.ts', './migration/*.js'],
       subscribers: ['./subscriber/*.ts', './subscriber/*.js'],
       ssl: false,
