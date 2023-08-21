@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException } from '@nestjs/common';
 import { RecordsService } from './records.service';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { UpdateRecordDto } from './dto/update-record.dto';
@@ -7,28 +7,29 @@ import { UpdateRecordDto } from './dto/update-record.dto';
 export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
-  @Post()
-  create(@Body() createRecordDto: CreateRecordDto) {
-    return this.recordsService.create(createRecordDto);
-  }
+  
 
   @Get()
-  findAll() {
-    return this.recordsService.findAll();
+  getRecords(@Query('count') count: number) {
+    return this.recordsService.getMany(count=count);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recordsService.findOne(+id);
+  @Post(':studentID')
+  create_or_update(@Param('studentID') studentID:string, @Body() createRecordDto: CreateRecordDto) {
+    return this.recordsService.create_or_update(studentID,createRecordDto);
+  }
+  
+  @Get(':studentID')
+  async findOne(@Param('studentID') studentID: string) {
+    const record = await this.recordsService.findOne(studentID);
+    if( record == null)
+      throw new NotFoundException();
+    return record;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRecordDto: UpdateRecordDto) {
-    return this.recordsService.update(+id, updateRecordDto);
-  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.recordsService.remove(+id);
+  @Delete(':studentID')
+  remove(@Param('studentID') studentID: string) {
+    return this.recordsService.remove(studentID);
   }
 }
