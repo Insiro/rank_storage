@@ -1,19 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Session } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import {SignInDto} from "./dto/sign-in.dto";
 import {SessionType} from "../utils";
-@Controller('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+import { CreateUserDto } from './dto/create-user.dto';
 
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly usersService: UsersService) {}
+  @Get()
+  getSignedUser(@Session() session:SessionType):SessionType{
+    return session
+  }
   @Post()
   async signIn(@Body() signInDTO: SignInDto,@Session() session: SessionType) :Promise<SessionType>{
     const user = await this.usersService.signIn(signInDTO)
-    session.id = user.id;
-    session.name = user.name;
-    session.save();
-
+    this.usersService.updateSession(session, user);
     return session
   }
 
@@ -22,4 +23,10 @@ export class UsersController {
     session.destroy(null);
     return "sign out";
   }
+  @Post('register')
+  async addUser(@Body() signUpDTO: CreateUserDto){
+    const user = await this.usersService.addUser(signUpDTO)
+    return "success"
+  }
+
 }
