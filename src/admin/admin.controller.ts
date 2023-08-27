@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Session } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Session, UnauthorizedException } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -10,6 +10,9 @@ export class AdminController {
 
   @Get()
   getRecordFile(@Session() session: SessionType){
+    if(!(session.uid ==null || session.uid ==undefined))
+      throw new UnauthorizedException()
+    //TODO:create record file
     // return this.adminService.getRecordFile();
   }
 }

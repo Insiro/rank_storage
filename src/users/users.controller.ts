@@ -18,8 +18,9 @@ export class UsersController {
   }
 
   @Delete()
-  signOut(@Session() session: SessionType) {
+  withdrawal(@Session() session: SessionType) {
     session.destroy(null);
+    //TODO:delete user
     return "sign out";
   }
 }

@@ -11,6 +11,7 @@ export class AuthController {
   getSignedUser(@Session() session:SessionType):SessionType{
     return session
   }
+
   @Post()
   async signIn(@Body() signInDTO: SignInDto,@Session() session: SessionType) :Promise<SessionType>{
     const user = await this.usersService.signIn(signInDTO)
@@ -23,9 +24,10 @@ export class AuthController {
     session.destroy(null);
     return "sign out";
   }
+  
   @Post('register')
   async addUser(@Body() signUpDTO: CreateUserDto){
-    const user = await this.usersService.addUser(signUpDTO)
+    await this.usersService.addUser(signUpDTO)
     return "success"
   }
 
