@@ -1,6 +1,12 @@
 import { Session } from 'express-session';
 
-export type SessionType = Session & {
+import { ApiPropertyOptional } from '@nestjs/swagger';
+
+export class SessionInfo  {
+  @ApiPropertyOptional()
   uid?: string;
+  @ApiPropertyOptional()
   name?: string;
 };
+
+export type SessionType = Session & SessionInfo;
