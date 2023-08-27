@@ -28,7 +28,7 @@ export class RecordsService {
   }
 
   async getMany(offset:number=0, count:number=10):Promise<Record[]> {
-    const records = await this.recordRepository.find({take:count, skip:offset})
+    const records = await this.recordRepository.find({take:count, skip:offset, order:{clear_time:"ASC"}})
     return records;
   }
 

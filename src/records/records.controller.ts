@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body,  Param, Delete, Query, NotFoundException } from '@nestjs/common';
 import { RecordsService } from './records.service';
 import { CreateRecordDto } from './dto/create-record.dto';
-import { UpdateRecordDto } from './dto/update-record.dto';
+import {RecordRankDTO} from "./dto/record_rank.dto";
 
 @Controller('records')
 export class RecordsController {
@@ -10,8 +10,9 @@ export class RecordsController {
   
 
   @Get()
-  getRecords(@Query('count') count: number) {
-    return this.recordsService.getMany(count=count);
+  async getRecords(@Query('count') count: number):Promise<RecordRankDTO[]> {
+    let records = await this.recordsService.getMany(count=count);
+    return records.map(it=> new RecordRankDTO(it))
   }
 
   @Post(':studentID')
