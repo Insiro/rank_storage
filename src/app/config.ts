@@ -1,23 +1,22 @@
-import { existsSync, readFileSync } from 'fs';
-import { resolve } from 'path';
-import dotenv,{ parse }  from 'dotenv';
+import { existsSync } from 'fs';
+import { config as dotenvConfig }  from 'dotenv';
 import { DataSourceOptions } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { Record } from 'src/entities/record.entity';
-const fileName = 'src/bot.env'
+const fileName = 'server.env'
 if (existsSync(fileName))
-    dotenv.config({path:fileName});
+    dotenvConfig({path:fileName});
 
   
 
 
 export const dataSourceOption: DataSourceOptions = {
       type: 'mysql',
-      host: process.env.dbHost || 'localhost',
-      port: parseInt(process.env.DB_PORT!!)|| 3306,
-      username: process.env.dbUsername||'TEST',
-      database: process.env.dbName||'TEST',
-      password: process.env.dbPWD ||'test1234',
+      host: process.env.DB_Host || 'localhost',
+      port: parseInt(process.env.DB_Port!!)|| 3306,
+      username: process.env.DB_Username||'TEST',
+      database: process.env.DB_Name||'TEST',
+      password: process.env.DB_Pwd ||'test1234',
       synchronize: false,
       logging: false,
       entities: [User, Record],
@@ -33,8 +32,7 @@ export const dataSourceOption: DataSourceOptions = {
   };
 
 export class Config {
-  public readonly port: string = process.env.PORT || '9080';
-  public readonly host: string = process.env.HOST || 'localhost';
-
+  public readonly port: string = process.env.Port || '9080';
+//   public readonly host: string = process.env.HOST || 'localhost';
 }
 export const config = new Config();
