@@ -1,6 +1,6 @@
 export class CreateRecordDto {
     student_id:string
-    clear_time:Date
+    clear_time:number
     name:string
     department:string
     phone:string

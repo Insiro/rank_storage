@@ -15,9 +15,9 @@ export class RecordsController {
     return records.map(it=> new RecordRankDTO(it))
   }
 
-  @Post(':studentID')
-  create_or_update(@Param('studentID') studentID:string, @Body() createRecordDto: CreateRecordDto) {
-    return this.recordsService.create_or_update(studentID,createRecordDto);
+  @Post()
+  create_or_update(@Body() createRecordDto: CreateRecordDto) {
+    return this.recordsService.create_or_update(createRecordDto);
   }
   
   @Get(':studentID')

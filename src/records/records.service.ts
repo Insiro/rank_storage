@@ -19,12 +19,10 @@ export class RecordsService {
   }
   
 
-  async create_or_update(id:string,createRecordDto: CreateRecordDto) {
-    //#TODO: create Record entity from DTO
-    const record = new Record();
-
+  async create_or_update(createRecordDto: CreateRecordDto) {
+    const record = Record.fromCreateDto(createRecordDto)
     await this.save(record);
-    return 'This action adds a new record';
+    return;
   }
 
   async getMany(offset:number=0, count:number=10):Promise<Record[]> {
