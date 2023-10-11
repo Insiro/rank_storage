@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class RecordsService {
+
   constructor(@InjectRepository(Record) private recordRepository: Repository<Record>) { }
   private async save(record: Record) {
     this.recordRepository.save(record);
@@ -18,10 +19,12 @@ export class RecordsService {
   }
 
 
-  async create_or_update(createRecordDto: CreateRecordDto) {
+  async create(createRecordDto: CreateRecordDto):Promise<Boolean> {
+    if( await this.recordRepository.countBy({student_id: createRecordDto.student_id}))
+      return false;
     const record = Record.fromCreateDto(createRecordDto)
     await this.save(record);
-    return;
+    return true;
   }
 
   async getMany(count: number = 10): Promise<Record[]> {
@@ -36,5 +39,13 @@ export class RecordsService {
   async remove(id: string) {
     const record = await this.findOne(id)
     this.recordRepository.delete(record)
+  }
+  async clear() {
+    let records = await this.getMany(undefined)
+    for (let r of records){
+      this.recordRepository.remove(r)
+    }
+
+
   }
 }

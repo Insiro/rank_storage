@@ -6,6 +6,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   setupSwagger(app)
   await app.listen(config.port);
-  console.log(`storage server is listening on ${config.port}`)
+  console.log(`storage server is listening on ${config.port}`);
 }
 bootstrap();

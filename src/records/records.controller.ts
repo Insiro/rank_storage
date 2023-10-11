@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Query, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, NotFoundException,ConflictException } from '@nestjs/common';
 import { RecordsService } from './records.service';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { RecordRankDTO } from "./dto/record_rank.dto";
@@ -21,8 +21,9 @@ export class RecordsController {
 
   @Post()
   @ApiOperation({ summary: '레코드 저장', description: '기록이 있으면 업데이트, 없으면 생성한다' })
-  create_or_update(@Body() createRecordDto: CreateRecordDto) {
-    return this.recordsService.create_or_update(createRecordDto);
+  async create(@Body() createRecordDto: CreateRecordDto) {
+    let ret = await this.recordsService.create(createRecordDto);
+    if (!ret)throw new ConflictException()
   }
 
   @Get(':studentID')
@@ -34,10 +35,15 @@ export class RecordsController {
     return record;
   }
 
-
+  @Delete('clear')
+  clear(){
+    console.log('aaaaa')
+    return this.recordsService.clear()
+  }
   @Delete(':studentID')
   @ApiOperation({ summary: '레코드 삭제', description: '단일 학생의 레코드를 학번을 기준으로 삭제한다' })
   remove(@Param('studentID') studentID: string) {
     return this.recordsService.remove(studentID);
   }
+
 }
