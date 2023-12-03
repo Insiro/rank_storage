@@ -11,24 +11,13 @@ if (existsSync(fileName))
 
 
 export const dataSourceOption: DataSourceOptions = {
-      type: 'mysql',
-      host: process.env.DB_Host || 'localhost',
-      port: parseInt(process.env.DB_Port!!)|| 3306,
-      username: process.env.DB_Username||'TEST',
-      database: process.env.DB_Name||'TEST',
-      password: process.env.DB_Pwd ||'test1234',
+      type: 'sqlite',
+      database: 'rank.db',
       synchronize: false,
       logging: false,
       entities: [User, Record],
       migrations: ['./migration/*.ts', './migration/*.js'],
       subscribers: ['./subscriber/*.ts', './subscriber/*.js'],
-      ssl: false,
-      extra: {
-          insecureAuth: true,
-          ssl: {
-              rejectUnauthorized: false,
-          },
-      },
   };
 
 export class Config {
