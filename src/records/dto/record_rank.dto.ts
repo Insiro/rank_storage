@@ -5,8 +5,11 @@ export class RecordRankDTO{
     clear_time:number
     @ApiProperty({description:"닉네임"})
     nickname:string
+    @ApiProperty({description:"이름"})
+    name:string
     constructor(record:Record){
         this.clear_time = record.clear_time;
         this.nickname = record.nickname
+        this.name = record.name
     }
 }
