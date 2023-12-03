@@ -22,8 +22,12 @@ export class RecordsController {
   @Post()
   @ApiOperation({ summary: '레코드 저장', description: '기록이 있으면 업데이트, 없으면 생성한다' })
   async create(@Body() createRecordDto: CreateRecordDto) {
-    let ret = await this.recordsService.create(createRecordDto);
-    if (!ret)throw new ConflictException()
+    try{
+      let ret = await this.recordsService.create(createRecordDto);
+      if (!ret)throw new ConflictException()
+    } catch{
+      throw new ConflictException()
+    }
   }
 
   @Get(':studentID')
